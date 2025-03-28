@@ -18,25 +18,21 @@ package org.springframework.ai.model;
 import reactor.core.publisher.Flux;
 
 /**
- * The StreamingModel interface provides a generic API for invoking an AI models with
- * streaming response. It abstracts the process of sending requests and receiving a
- * streaming responses. The interface uses Java generics to accommodate different types of
- * requests and responses, enhancing flexibility and adaptability across different AI
- * model implementations.
+ * StreamingModel 接口提供了一个通用的 API，用于调用具有流式响应的 AI 模型。它抽象了发送请求和接收流式响应的过程。该接口使用 Java 泛型来适应不同类型的请求和响应，增强了跨不同 AI 模型实现的灵活性和适应性。
  *
- * @param <TReq> the generic type of the request to the AI model
- * @param <TResChunk> the generic type of a single item in the streaming response from the
- * AI model
+ * @param <TReq>      AI 模型的请求类型
+ * @param <TResChunk> 来自 AI 模型的流式响应中的单个项目的类型。
  * @author Christian Tzolov
  * @since 0.8.0
  */
 public interface StreamingModel<TReq extends ModelRequest<?>, TResChunk extends ModelResponse<?>> {
 
-	/**
-	 * Executes a method call to the AI model.
-	 * @param request the request object to be sent to the AI model
-	 * @return the streaming response from the AI model
-	 */
-	Flux<TResChunk> stream(TReq request);
+    /**
+     * 执行对 AI 模型的方法调用。
+     *
+     * @param request 要发送到 AI 模型的请求对象。
+     * @return 来自 AI 模型的流式响应。
+     */
+    Flux<TResChunk> stream(TReq request);
 
 }

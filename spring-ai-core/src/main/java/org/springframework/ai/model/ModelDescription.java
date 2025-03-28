@@ -17,22 +17,36 @@
 package org.springframework.ai.model;
 
 /**
+ * 模型描述接口
+ *
  * @author Christian Tzolov
  */
 public interface ModelDescription {
 
-	String getModelName();
+    /**
+     * 获取模型的名称
+     */
+    String getModelName();
 
-	default String getDescription() {
-		return "";
-	}
+    /**
+     * 获取模型的描述
+     */
+    default String getDescription() {
+        return "";
+    }
 
-	default String getVersion() {
-		return "";
-	}
+    /**
+     * 获取模型的版本
+     */
+    default String getVersion() {
+        return "";
+    }
 
-	default int getContextLength() {
-		return -1;
-	}
+    /**
+     * 获取模型的上下文长度
+     */
+    default int getContextLength() {
+        return -1;
+    }
 
 }

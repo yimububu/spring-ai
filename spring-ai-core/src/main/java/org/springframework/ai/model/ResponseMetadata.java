@@ -18,11 +18,7 @@ package org.springframework.ai.model;
 import java.util.Map;
 
 /**
- * Interface representing metadata associated with an AI model's response. This interface
- * is designed to provide additional information about the generative response from an AI
- * model, including processing details and model-specific data. It serves as a value
- * object within the core domain, enhancing the understanding and management of AI model
- * responses in various applications.
+ * 该接口代表和 AI 模型响应相关的元数据。这个接口旨在为从 AI 模型生成的响应提供额外信息，包括处理细节和特定于某个模型的数据。该接口作为核心领域内的 value object，增强了对 AI 模型响应的理解和管理，使其在各种应用中更加高效。
  *
  * @author Mark Pollack
  * @since 0.8.0

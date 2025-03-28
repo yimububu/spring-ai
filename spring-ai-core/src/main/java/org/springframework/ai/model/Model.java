@@ -16,24 +16,21 @@
 package org.springframework.ai.model;
 
 /**
- * The Model interface provides a generic API for invoking AI models. It is designed to
- * handle the interaction with various types of AI models by abstracting the process of
- * sending requests and receiving responses. The interface uses Java generics to
- * accommodate different types of requests and responses, enhancing flexibility and
- * adaptability across different AI model implementations.
+ * Model 接口提供了一个通用 API，用于调用 AI 模型。它旨在通过抽象请求发送和响应接收的过程来处理与各种类型 AI 模型的交互。该接口使用 Java 泛型来适应不同类型的请求和响应，从而增强在不同 AI 模型实现中的灵活性和适应性。
  *
- * @param <TReq> the generic type of the request to the AI model
- * @param <TRes> the generic type of the response from the AI model
+ * @param <TReq> AI 模型的请求类型
+ * @param <TRes> AI 模型的响应类型
  * @author Mark Pollack
  * @since 0.8.0
  */
 public interface Model<TReq extends ModelRequest<?>, TRes extends ModelResponse<?>> {
 
-	/**
-	 * Executes a method call to the AI model.
-	 * @param request the request object to be sent to the AI model
-	 * @return the response from the AI model
-	 */
-	TRes call(TReq request);
+    /**
+     * 执行对 AI 模型的方法调用。
+     *
+     * @param request 要发送到 AI 模型的请求对象。
+     * @return 来自 AI 模型的响应。
+     */
+    TRes call(TReq request);
 
 }

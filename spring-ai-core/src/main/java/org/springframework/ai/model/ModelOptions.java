@@ -16,11 +16,7 @@
 package org.springframework.ai.model;
 
 /**
- * Interface representing the customizable options for AI model interactions. This marker
- * interface allows for the specification of various settings and parameters that can
- * influence the behavior and output of AI models. It is designed to provide flexibility
- * and adaptability in different AI scenarios, ensuring that the AI models can be
- * fine-tuned according to specific requirements.
+ * 该接口代表用于 AI 模型交互的自定义选项。这个标记接口允许指定多种设置和参数，这些设置和参数可以影响 AI 模型的行为和输出。它旨在为不同的 AI 场景提供灵活性和适应性，确保 AI 模型能够根据特定要求进行微调。
  *
  * @author Mark Pollack
  * @since 0.8.0

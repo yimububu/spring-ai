@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 /**
- * Provides a set of interfaces and classes for a generic API designed to interact with
- * various AI models. This package includes interfaces for handling AI model calls,
- * requests, responses, results, and associated metadata. It is designed to offer a
- * flexible and adaptable framework for interacting with different types of AI models,
- * abstracting the complexities involved in model invocation and result processing. The
- * use of generics enhances the API's capability to work with a wide range of models,
- * ensuring a broad applicability across diverse AI scenarios.
- *
+ * 提供了一组用于构建通用 API 接口和类，以便与各种 AI 模型交互。包括用于处理 AI 模型调用、请求、响应、结果及相关元数据的接口，旨在提供一个灵活且可扩展的框架，以适应不同类型的 AI 模型交互，抽象化模型调用和结果处理的复杂性。通过泛型的使用，该 API 具备更强的适应性，能够支持多种 AI 模型，确保在不同 AI 场景中的广泛适用性。
  */
 package org.springframework.ai.model;

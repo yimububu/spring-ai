@@ -16,28 +16,26 @@
 package org.springframework.ai.model;
 
 /**
- * Interface representing a request to an AI model. This interface encapsulates the
- * necessary information required to interact with an AI model, including instructions or
- * inputs (of generic type T) and additional model options. It provides a standardized way
- * to send requests to AI models, ensuring that all necessary details are included and can
- * be easily managed.
+ * 该接口代表发向 AI 模型的请求。这个接口封装了与 AI 模型进行交互所需要的必要信息，包括指令或者输入以及额外的 AI 模型选项。它提供了一种向 AI 模型发送请求的通用方法，以确保包含所有必要的细节并且可以轻松管理。
  *
- * @param <T> the type of instructions or input required by the AI model
+ * @param <T> AI 模型所需的指令或输入的类型
  * @author Mark Pollack
  * @since 0.8.0
  */
 public interface ModelRequest<T> {
 
-	/**
-	 * Retrieves the instructions or input required by the AI model.
-	 * @return the instructions or input required by the AI model
-	 */
-	T getInstructions(); // required input
+    /**
+     * 检索 AI 模型所需的指令或输入
+     *
+     * @return AI 模型所需的指令或输入
+     */
+    T getInstructions(); // 必须输入
 
-	/**
-	 * Retrieves the customizable options for AI model interactions.
-	 * @return the customizable options for AI model interactions
-	 */
-	ModelOptions getOptions();
+    /**
+     * 检索用于 AI 模型交互的可自定义的选项。
+     *
+     * @return 用于 AI 模型交互的自定义选项
+     */
+    ModelOptions getOptions();
 
 }

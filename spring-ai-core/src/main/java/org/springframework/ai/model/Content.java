@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Data structure that contains content and metadata. Common parent for the
- * {@link org.springframework.ai.document.Document} and the
- * {@link org.springframework.ai.chat.messages.Message} classes.
+ * 包含内容和元数据的数据结构。{@link org.springframework.ai.document.Document}和{@link org.springframework.ai.chat.messages.Message}共同父类。
  *
  * @author Mark Pollack
  * @author Christian Tzolov
@@ -17,31 +15,31 @@ import java.util.Map;
  */
 public interface Content {
 
-	/**
-	 * Get the content of the message.
-	 */
-	String getContent(); // TODO consider getText
+    /**
+     * 获取消息的内容。
+     */
+    String getContent(); // TODO consider getText
 
-	/**
-	 * Get the media associated with the content.
-	 */
-	default Collection<Media> getMedia() {
-		return getMedia("");
-	}
+    /**
+     * 获取与内容相关的媒体。
+     */
+    default Collection<Media> getMedia() {
+        return getMedia("");
+    }
 
-	/**
-	 * Retrieves the collection of media attachments associated with the content.
-	 * @param dummy a dummy parameter to ensure method signature uniqueness
-	 * @return a list of Media objects representing the media attachments
-	 * @deprecated This method is deprecated since version 1.0.0 M1 and will be removed in
-	 * a future release
-	 */
-	@Deprecated(since = "1.0.0 M1", forRemoval = true)
-	List<Media> getMedia(String... dummy);
+    /**
+     * 检索与内容相关的媒体附件集合。
+     *
+     * @param dummy 一个虚拟参数，用于确保方法签名的唯一性。
+     * @return 表示媒体附件的 Media 对象列表。
+     * @deprecated 自版本 1.0.0 M1 起，该方法已弃用，并将在未来的版本中移除。
+     */
+    @Deprecated(since = "1.0.0 M1", forRemoval = true)
+    List<Media> getMedia(String... dummy);
 
-	/**
-	 * return Get the metadata associated with the content.
-	 */
-	Map<String, Object> getMetadata();
+    /**
+     * 返回与内容相关的元数据。
+     */
+    Map<String, Object> getMetadata();
 
 }
