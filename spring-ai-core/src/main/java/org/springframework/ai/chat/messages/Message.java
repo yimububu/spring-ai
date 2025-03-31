@@ -18,15 +18,13 @@ package org.springframework.ai.chat.messages;
 import org.springframework.ai.model.Content;
 
 /**
- * The Message interface represents a message that can be sent or received in a chat
- * application. Messages can have content, media attachments, properties, and message
- * types.
+ * Message 接口表示可以在聊天应用中发送或接收的消息。消息可以包含内容、媒体附件、属性和消息类型。
  *
  * @see Media
  * @see MessageType
  */
 public interface Message extends Content {
 
-	MessageType getMessageType();
+    MessageType getMessageType();
 
 }
