@@ -23,43 +23,37 @@ import java.util.Set;
  */
 public interface FunctionCallingOptions {
 
-	/**
-	 * Function Callbacks to be registered with the ChatModel. For Prompt Options the
-	 * functionCallbacks are automatically enabled for the duration of the prompt
-	 * execution. For Default Options the FunctionCallbacks are registered but disabled by
-	 * default. You have to use "functions" property to list the function names from the
-	 * ChatModel registry to be used in the chat completion requests.
-	 * @return Return the Function Callbacks to be registered with the ChatModel.
-	 */
-	List<FunctionCallback> getFunctionCallbacks();
+    /**
+     * 将 Function Callbacks 注册到 ChatModel。对于 Prompt 选项，函数回调会在 prompt 执行期间自动启用。对于默认选项，函数回调会被注册但默认处于禁用状态。你需要使用 "functions" 属性，在 ChatModel 注册表中列出要用于聊天补全请求的函数名称。
+     *
+     * @return 返回要注册到 ChatModel 的函数回调（Function Callbacks）。
+     */
+    List<FunctionCallback> getFunctionCallbacks();
 
-	/**
-	 * Set the Function Callbacks to be registered with the ChatModel.
-	 * @param functionCallbacks the Function Callbacks to be registered with the
-	 * ChatModel.
-	 */
-	void setFunctionCallbacks(List<FunctionCallback> functionCallbacks);
+    /**
+     * 设置要注册到 ChatModel 的函数回调（Function Callbacks）。
+     *
+     * @param functionCallbacks 要注册到 ChatModel 的函数回调（Function Callbacks）。
+     */
+    void setFunctionCallbacks(List<FunctionCallback> functionCallbacks);
 
-	/**
-	 * @return List of function names from the ChatModel registry to be used in the next
-	 * chat completion requests.
-	 */
-	Set<String> getFunctions();
+    /**
+     * @return 从 ChatModel 注册表中获取的函数名称列表，这些函数将在下一个聊天补全请求中使用。
+     */
+    Set<String> getFunctions();
 
-	/**
-	 * Set the list of function names from the ChatModel registry to be used in the next
-	 * chat completion requests.
-	 * @param functions the list of function names from the ChatModel registry to be used
-	 * in the next chat completion requests.
-	 */
-	void setFunctions(Set<String> functions);
+    /**
+     * 设置从 ChatModel 注册表中获取的函数名称列表，这些函数将在下一个聊天补全请求中使用。
+     *
+     * @param functions 从 ChatModel 注册表中获取的函数名称列表，这些函数将在下一个聊天补全请求中使用。
+     */
+    void setFunctions(Set<String> functions);
 
-	/**
-	 * @return Returns FunctionCallingOptionsBuilder to create a new instance of
-	 * FunctionCallingOptions.
-	 */
-	public static FunctionCallingOptionsBuilder builder() {
-		return new FunctionCallingOptionsBuilder();
-	}
+    /**
+     * @return 返回 FunctionCallingOptionsBuilder 以创建 FunctionCallingOptions 的新实例。
+     */
+    public static FunctionCallingOptionsBuilder builder() {
+        return new FunctionCallingOptionsBuilder();
+    }
 
 }

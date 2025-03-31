@@ -18,14 +18,14 @@ package org.springframework.ai.chat.prompt;
 import org.springframework.ai.model.ModelOptions;
 
 /**
- * The ChatOptions represent the common options, portable across different chat models.
+ * ChatOptions 代表通用选项，可在不同的聊天模型之间进行移植。
  */
 public interface ChatOptions extends ModelOptions {
 
-	Float getTemperature();
+    Float getTemperature();
 
-	Float getTopP();
+    Float getTopP();
 
-	Integer getTopK();
+    Integer getTopK();
 
 }

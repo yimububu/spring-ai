@@ -28,25 +28,28 @@ import org.springframework.ai.model.Model;
 
 public interface ChatModel extends Model<Prompt, ChatResponse>, StreamingChatModel {
 
-	default String call(String message) {
-		Prompt prompt = new Prompt(new UserMessage(message));
-		Generation generation = call(prompt).getResult();
-		return (generation != null) ? generation.getOutput().getContent() : "";
-	}
+    default String call(String message) {
+        Prompt prompt = new Prompt(new UserMessage(message));
+        Generation generation = call(prompt).getResult();
+        return (generation != null) ? generation.getOutput().getContent() : "";
+    }
 
-	default String call(Message... messages) {
-		Prompt prompt = new Prompt(Arrays.asList(messages));
-		Generation generation = call(prompt).getResult();
-		return (generation != null) ? generation.getOutput().getContent() : "";
-	}
+    default String call(Message... messages) {
+        Prompt prompt = new Prompt(Arrays.asList(messages));
+        Generation generation = call(prompt).getResult();
+        return (generation != null) ? generation.getOutput().getContent() : "";
+    }
 
-	@Override
-	ChatResponse call(Prompt prompt);
+    @Override
+    ChatResponse call(Prompt prompt);
 
-	ChatOptions getDefaultOptions();
+    /**
+     * 模型配置参数的处理
+     */
+    ChatOptions getDefaultOptions();
 
-	default Flux<ChatResponse> stream(Prompt prompt) {
-		throw new UnsupportedOperationException("streaming is not supported");
-	}
+    default Flux<ChatResponse> stream(Prompt prompt) {
+        throw new UnsupportedOperationException("streaming is not supported");
+    }
 
 }

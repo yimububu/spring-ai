@@ -16,37 +16,33 @@
 package org.springframework.ai.model.function;
 
 /**
- * Represents a model function call handler. Implementations are registered with the
- * Models and called on prompts that trigger the function call.
+ * 表示一个模型 function call 处理器。接口的实现通过在模型中注册，在触发 function call 的提示词时调用该接口的实现类。
  *
  * @author Christian Tzolov
  */
 public interface FunctionCallback {
 
-	/**
-	 * @return Returns the Function name. Unique within the model.
-	 */
-	public String getName();
+    /**
+     * @return 返回在  AI 模型内唯一函数名称。
+     */
+    public String getName();
 
-	/**
-	 * @return Returns the function description. This description is used by the model do
-	 * decide if the function should be called or not.
-	 */
-	public String getDescription();
+    /**
+     * @return 返回函数的描述。该描述用于 AI 模型判断是否应调用该函数。
+     */
+    public String getDescription();
 
-	/**
-	 * @return Returns the JSON schema of the function input type.
-	 */
-	public String getInputTypeSchema();
+    /**
+     * @return 返回函数输入类型的 JSON 模式。
+     */
+    public String getInputTypeSchema();
 
-	/**
-	 * Called when a model detects and triggers a function call. The model is responsible
-	 * to pass the function arguments in the pre-configured JSON schema format.
-	 * @param functionInput JSON string with the function arguments to be passed to the
-	 * function. The arguments are defined as JSON schema usually registered with the the
-	 * model.
-	 * @return String containing the function call response.
-	 */
-	public String call(String functionInput);
+    /**
+     * 当 AI 模型检测到并触发 function call 时，将调用此方法。AI 模型负责按照预先配置的 JSON 模式格式传递函数参数。
+     *
+     * @param functionInput 作为 JSON 字符串的函数参数将传递给函数。参数定义是 JSON 模式，通常注册到模型中。
+     * @return 包含 function call 响应的字符串。
+     */
+    public String call(String functionInput);
 
 }

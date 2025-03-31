@@ -24,121 +24,119 @@ import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.util.Assert;
 
 /**
- * Builder for {@link FunctionCallingOptions}. Using the {@link FunctionCallingOptions}
- * permits options portability between different AI providers that support
- * function-calling.
+ * {@link FunctionCallingOptions}的构造器，使用{@link FunctionCallingOptions}可在支持函数调用的不同 AI 提供商之间实现选项的可移植性。
  *
  * @author Christian Tzolov
  * @since 0.8.1
  */
 public class FunctionCallingOptionsBuilder {
 
-	private final PortableFunctionCallingOptions options;
+    private final PortableFunctionCallingOptions options;
 
-	public FunctionCallingOptionsBuilder() {
-		this.options = new PortableFunctionCallingOptions();
-	}
+    public FunctionCallingOptionsBuilder() {
+        this.options = new PortableFunctionCallingOptions();
+    }
 
-	public FunctionCallingOptionsBuilder withFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
-		this.options.setFunctionCallbacks(functionCallbacks);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
+        this.options.setFunctionCallbacks(functionCallbacks);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withFunctionCallback(FunctionCallback functionCallback) {
-		Assert.notNull(functionCallback, "FunctionCallback must not be null");
-		this.options.getFunctionCallbacks().add(functionCallback);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withFunctionCallback(FunctionCallback functionCallback) {
+        Assert.notNull(functionCallback, "FunctionCallback must not be null");
+        this.options.getFunctionCallbacks().add(functionCallback);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withFunctions(Set<String> functions) {
-		this.options.setFunctions(functions);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withFunctions(Set<String> functions) {
+        this.options.setFunctions(functions);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withFunction(String function) {
-		Assert.notNull(function, "Function must not be null");
-		this.options.getFunctions().add(function);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withFunction(String function) {
+        Assert.notNull(function, "Function must not be null");
+        this.options.getFunctions().add(function);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withTemperature(Float temperature) {
-		this.options.setTemperature(temperature);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withTemperature(Float temperature) {
+        this.options.setTemperature(temperature);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withTopP(Float topP) {
-		this.options.setTopP(topP);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withTopP(Float topP) {
+        this.options.setTopP(topP);
+        return this;
+    }
 
-	public FunctionCallingOptionsBuilder withTopK(Integer topK) {
-		this.options.setTopK(topK);
-		return this;
-	}
+    public FunctionCallingOptionsBuilder withTopK(Integer topK) {
+        this.options.setTopK(topK);
+        return this;
+    }
 
-	public PortableFunctionCallingOptions build() {
-		return this.options;
-	}
+    public PortableFunctionCallingOptions build() {
+        return this.options;
+    }
 
-	public static class PortableFunctionCallingOptions implements FunctionCallingOptions, ChatOptions {
+    public static class PortableFunctionCallingOptions implements FunctionCallingOptions, ChatOptions {
 
-		private List<FunctionCallback> functionCallbacks = new ArrayList<>();
+        private List<FunctionCallback> functionCallbacks = new ArrayList<>();
 
-		private Set<String> functions = new HashSet<>();
+        private Set<String> functions = new HashSet<>();
 
-		private Float temperature;
+        private Float temperature;
 
-		private Float topP;
+        private Float topP;
 
-		private Integer topK;
+        private Integer topK;
 
-		@Override
-		public List<FunctionCallback> getFunctionCallbacks() {
-			return this.functionCallbacks;
-		}
+        @Override
+        public List<FunctionCallback> getFunctionCallbacks() {
+            return this.functionCallbacks;
+        }
 
-		public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
-			Assert.notNull(functionCallbacks, "FunctionCallbacks must not be null");
-			this.functionCallbacks = functionCallbacks;
-		}
+        public void setFunctionCallbacks(List<FunctionCallback> functionCallbacks) {
+            Assert.notNull(functionCallbacks, "FunctionCallbacks must not be null");
+            this.functionCallbacks = functionCallbacks;
+        }
 
-		@Override
-		public Set<String> getFunctions() {
-			return this.functions;
-		}
+        @Override
+        public Set<String> getFunctions() {
+            return this.functions;
+        }
 
-		public void setFunctions(Set<String> functions) {
-			Assert.notNull(functions, "Functions must not be null");
-			this.functions = functions;
-		}
+        public void setFunctions(Set<String> functions) {
+            Assert.notNull(functions, "Functions must not be null");
+            this.functions = functions;
+        }
 
-		@Override
-		public Float getTemperature() {
-			return this.temperature;
-		}
+        @Override
+        public Float getTemperature() {
+            return this.temperature;
+        }
 
-		public void setTemperature(Float temperature) {
-			this.temperature = temperature;
-		}
+        public void setTemperature(Float temperature) {
+            this.temperature = temperature;
+        }
 
-		@Override
-		public Float getTopP() {
-			return this.topP;
-		}
+        @Override
+        public Float getTopP() {
+            return this.topP;
+        }
 
-		public void setTopP(Float topP) {
-			this.topP = topP;
-		}
+        public void setTopP(Float topP) {
+            this.topP = topP;
+        }
 
-		@Override
-		public Integer getTopK() {
-			return this.topK;
-		}
+        @Override
+        public Integer getTopK() {
+            return this.topK;
+        }
 
-		public void setTopK(Integer topK) {
-			this.topK = topK;
-		}
+        public void setTopK(Integer topK) {
+            this.topK = topK;
+        }
 
-	}
+    }
 
 }

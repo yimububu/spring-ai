@@ -33,16 +33,15 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
 /**
- * A Spring {@link ApplicationContextAware} implementation that provides a way to retrieve
- * a {@link Function} from the Spring context and wrap it into a {@link FunctionCallback}.
- *
- * The name of the function is determined by the bean name.
- *
- * The description of the function is determined by the following rules:
+ * Spring {@link ApplicationContextAware} 的实现，它提供了一种从 Spring 上下文中检索 Function 并将其包装为 FunctionCallback 的方法。
+ * <p>
+ * 函数的名称由 Bean 名称确定
+ * <p>
+ * 函数的描述由以下规则决定：
  * <ul>
- * <li>Provided as a default description</li>
- * <li>Provided as a {@code @Description} annotation on the bean</li>
- * <li>Provided as a {@code @JsonClassDescription} annotation on the input class</li>
+ * <li>作为默认描述提供</li>
+ * <li>通过 {@code @Description} 注解定义在 Bean 上</li>
+ * <li>通过 {@code @JsonClassDescription} 注解定义在输入类上</li>
  * </ul>
  *
  * @author Christian Tzolov
@@ -50,77 +49,85 @@ import org.springframework.util.StringUtils;
  */
 public class FunctionCallbackContext implements ApplicationContextAware {
 
-	private GenericApplicationContext applicationContext;
+    private GenericApplicationContext applicationContext;
 
-	private SchemaType schemaType = SchemaType.JSON_SCHEMA;
+    private SchemaType schemaType = SchemaType.JSON_SCHEMA;
 
-	public void setSchemaType(SchemaType schemaType) {
-		this.schemaType = schemaType;
-	}
+    public void setSchemaType(SchemaType schemaType) {
+        this.schemaType = schemaType;
+    }
 
-	@Override
-	public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = (GenericApplicationContext) applicationContext;
-	}
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = (GenericApplicationContext) applicationContext;
+    }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public FunctionCallback getFunctionCallback(@NonNull String beanName, @Nullable String defaultDescription) {
+    /**
+     * 从Spring 上下文中获取 Function call 的 Bean
+     *
+     * @param beanName           Function call 的 Bean 名称
+     * @param defaultDescription 默认的描述
+     */
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public FunctionCallback getFunctionCallback(@NonNull String beanName, @Nullable String defaultDescription) {
 
-		Type beanType = FunctionContextUtils.findType(this.applicationContext.getBeanFactory(), beanName);
+        Type beanType = FunctionContextUtils.findType(this.applicationContext.getBeanFactory(), beanName);
 
-		if (beanType == null) {
-			throw new IllegalArgumentException(
-					"Functional bean with name: " + beanName + " does not exist in the context.");
-		}
+        if (beanType == null) {
+            throw new IllegalArgumentException(
+                    "Functional bean with name: " + beanName + " does not exist in the context.");
+        }
 
-		if (!Function.class.isAssignableFrom(FunctionTypeUtils.getRawType(beanType))) {
-			throw new IllegalArgumentException(
-					"Function call Bean must be of type Function. Found: " + beanType.getTypeName());
-		}
+        //  检查 beanType 是否是 Function 或其子类
+        if (!Function.class.isAssignableFrom(FunctionTypeUtils.getRawType(beanType))) {
+            throw new IllegalArgumentException(
+                    "Function call Bean must be of type Function. Found: " + beanType.getTypeName());
+        }
 
-		Type functionInputType = TypeResolverHelper.getFunctionArgumentType(beanType, 0);
+        // 获取 Function 的输入参数类型
+        Type functionInputType = TypeResolverHelper.getFunctionArgumentType(beanType, 0);
 
-		Class<?> functionInputClass = FunctionTypeUtils.getRawType(functionInputType);
-		String functionName = beanName;
-		String functionDescription = defaultDescription;
+        Class<?> functionInputClass = FunctionTypeUtils.getRawType(functionInputType);
+        String functionName = beanName;
+        String functionDescription = defaultDescription;
 
-		if (!StringUtils.hasText(functionDescription)) {
-			// Look for a Description annotation on the bean
-			Description descriptionAnnotation = applicationContext.findAnnotationOnBean(beanName, Description.class);
+        // functionDescription 为空，尝试从 Description / JsonClassDescription 注解获取函数描述
+        if (!StringUtils.hasText(functionDescription)) {
+            // Look for a Description annotation on the bean
+            Description descriptionAnnotation = applicationContext.findAnnotationOnBean(beanName, Description.class);
 
-			if (descriptionAnnotation != null) {
-				functionDescription = descriptionAnnotation.value();
-			}
+            if (descriptionAnnotation != null) {
+                functionDescription = descriptionAnnotation.value();
+            }
 
-			if (!StringUtils.hasText(functionDescription)) {
-				// Look for a JsonClassDescription annotation on the input class
-				JsonClassDescription jsonClassDescriptionAnnotation = functionInputClass
-					.getAnnotation(JsonClassDescription.class);
-				if (jsonClassDescriptionAnnotation != null) {
-					functionDescription = jsonClassDescriptionAnnotation.value();
-				}
-			}
+            if (!StringUtils.hasText(functionDescription)) {
+                // Look for a JsonClassDescription annotation on the input class
+                JsonClassDescription jsonClassDescriptionAnnotation = functionInputClass
+                        .getAnnotation(JsonClassDescription.class);
+                if (jsonClassDescriptionAnnotation != null) {
+                    functionDescription = jsonClassDescriptionAnnotation.value();
+                }
+            }
 
-			if (!StringUtils.hasText(functionDescription)) {
-				throw new IllegalStateException("Could not determine function description."
-						+ "Please provide a description either as a default parameter, via @Description annotation on the bean "
-						+ "or @JsonClassDescription annotation on the input class.");
-			}
-		}
+            if (!StringUtils.hasText(functionDescription)) {
+                throw new IllegalStateException("Could not determine function description."
+                        + "Please provide a description either as a default parameter, via @Description annotation on the bean "
+                        + "or @JsonClassDescription annotation on the input class.");
+            }
+        }
 
-		Object bean = this.applicationContext.getBean(beanName);
+        Object bean = this.applicationContext.getBean(beanName);
 
-		if (bean instanceof Function<?, ?> function) {
-			return FunctionCallbackWrapper.builder(function)
-				.withName(functionName)
-				.withSchemaType(this.schemaType)
-				.withDescription(functionDescription)
-				.withInputType(functionInputClass)
-				.build();
-		}
-		else {
-			throw new IllegalArgumentException("Bean must be of type Function");
-		}
-	}
+        if (bean instanceof Function<?, ?> function) {
+            return FunctionCallbackWrapper.builder(function)
+                    .withName(functionName)
+                    .withSchemaType(this.schemaType)
+                    .withDescription(functionDescription)
+                    .withInputType(functionInputClass)
+                    .build();
+        } else {
+            throw new IllegalArgumentException("Bean must be of type Function");
+        }
+    }
 
 }

@@ -25,64 +25,78 @@ import net.jodah.typetools.TypeResolver;
 import org.springframework.cloud.function.context.catalog.FunctionTypeUtils;
 
 /**
+ * 解析 Function 类型的输入（参数）和输出（返回值）的泛型类型，并提供方法将其转换为 Class 或 Type。
+ *
  * @author Christian Tzolov
  */
 public class TypeResolverHelper {
 
-	public static Class<?> getFunctionInputClass(Class<? extends Function<?, ?>> functionClass) {
-		return getFunctionArgumentClass(functionClass, 0);
-	}
+    /***/
+    public static Class<?> getFunctionInputClass(Class<? extends Function<?, ?>> functionClass) {
+        return getFunctionArgumentClass(functionClass, 0);
+    }
 
-	public static Class<?> getFunctionOutputClass(Class<? extends Function<?, ?>> functionClass) {
-		return getFunctionArgumentClass(functionClass, 1);
-	}
+    /***/
+    public static Class<?> getFunctionOutputClass(Class<? extends Function<?, ?>> functionClass) {
+        return getFunctionArgumentClass(functionClass, 1);
+    }
 
-	public static Class<?> getFunctionArgumentClass(Class<? extends Function<?, ?>> functionClass, int argumentIndex) {
-		Type type = TypeResolver.reify(Function.class, functionClass);
+    /**
+     * 获取 Function 泛型的指定索引参数（0 表示输入参数，1 表示返回值），如果无法解析，则默认返回 Object.class
+     */
+    public static Class<?> getFunctionArgumentClass(Class<? extends Function<?, ?>> functionClass, int argumentIndex) {
+        Type type = TypeResolver.reify(Function.class, functionClass);
 
-		var argumentType = type instanceof ParameterizedType
-				? ((ParameterizedType) type).getActualTypeArguments()[argumentIndex] : Object.class;
+        var argumentType = type instanceof ParameterizedType
+                ? ((ParameterizedType) type).getActualTypeArguments()[argumentIndex] : Object.class;
 
-		return toRawClass(argumentType);
-	}
+        return toRawClass(argumentType);
+    }
 
-	public static Type getFunctionInputType(Class<? extends Function<?, ?>> functionClass) {
-		return getFunctionArgumentType(functionClass, 0);
-	}
+    /***/
+    public static Type getFunctionInputType(Class<? extends Function<?, ?>> functionClass) {
+        return getFunctionArgumentType(functionClass, 0);
+    }
 
-	public static Type getFunctionOutputType(Class<? extends Function<?, ?>> functionClass) {
-		return getFunctionArgumentType(functionClass, 1);
-	}
+    /***/
+    public static Type getFunctionOutputType(Class<? extends Function<?, ?>> functionClass) {
+        return getFunctionArgumentType(functionClass, 1);
+    }
 
-	public static Type getFunctionArgumentType(Class<? extends Function<?, ?>> functionClass, int argumentIndex) {
-		Type functionType = TypeResolver.reify(Function.class, functionClass);
-		return getFunctionArgumentType(functionType, argumentIndex);
-	}
+    /***/
+    public static Type getFunctionArgumentType(Class<? extends Function<?, ?>> functionClass, int argumentIndex) {
+        Type functionType = TypeResolver.reify(Function.class, functionClass);
+        return getFunctionArgumentType(functionType, argumentIndex);
+    }
 
-	public static Type getFunctionArgumentType(Type functionType, int argumentIndex) {
+    /**
+     * 与 getFunctionArgumentClass 类似，但返回的是 Type，用于保留泛型信息。
+     */
+    public static Type getFunctionArgumentType(Type functionType, int argumentIndex) {
 
-		// Resolves: https://github.com/spring-projects/spring-ai/issues/726
-		if (!(functionType instanceof ParameterizedType)) {
-			functionType = FunctionTypeUtils.discoverFunctionTypeFromClass(FunctionTypeUtils.getRawType(functionType));
-		}
+        // Resolves: https://github.com/spring-projects/spring-ai/issues/726
+        if (!(functionType instanceof ParameterizedType)) {
+            functionType = FunctionTypeUtils.discoverFunctionTypeFromClass(FunctionTypeUtils.getRawType(functionType));
+        }
 
-		var argumentType = functionType instanceof ParameterizedType
-				? ((ParameterizedType) functionType).getActualTypeArguments()[argumentIndex] : Object.class;
+        var argumentType = functionType instanceof ParameterizedType
+                ? ((ParameterizedType) functionType).getActualTypeArguments()[argumentIndex] : Object.class;
 
-		return argumentType;
-	}
+        return argumentType;
+    }
 
-	/**
-	 * Effectively converts {@link Type} which could be {@link ParameterizedType} to raw
-	 * Class (no generics).
-	 * @param type actual {@link Type} instance
-	 * @return instance of {@link Class} as raw representation of the provided
-	 * {@link Type}
-	 */
-	public static Class<?> toRawClass(Type type) {
-		return type != null
-				? TypeResolver.resolveRawClass(type instanceof GenericArrayType ? type : TypeResolver.reify(type), null)
-				: null;
-	}
+    /**
+     * Effectively converts {@link Type} which could be {@link ParameterizedType} to raw
+     * Class (no generics).
+     *
+     * @param type actual {@link Type} instance
+     * @return instance of {@link Class} as raw representation of the provided
+     * {@link Type}
+     */
+    public static Class<?> toRawClass(Type type) {
+        return type != null
+                ? TypeResolver.resolveRawClass(type instanceof GenericArrayType ? type : TypeResolver.reify(type), null)
+                : null;
+    }
 
 }
