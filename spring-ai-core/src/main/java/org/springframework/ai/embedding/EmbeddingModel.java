@@ -22,60 +22,66 @@ import org.springframework.util.Assert;
 import java.util.List;
 
 /**
- * EmbeddingModel is a generic interface for embedding models.
+ * EmbeddingModel 是一个用于嵌入模型的通用接口。
  */
 public interface EmbeddingModel extends Model<EmbeddingRequest, EmbeddingResponse> {
 
-	@Override
-	EmbeddingResponse call(EmbeddingRequest request);
+    /**
+     * 嵌入模型访问统一抽象接口，不同的大模型实现该方法完成各自的嵌入逻辑
+     */
+    @Override
+    EmbeddingResponse call(EmbeddingRequest request);
 
-	/**
-	 * Embeds the given text into a vector.
-	 * @param text the text to embed.
-	 * @return the embedded vector.
-	 */
-	default List<Double> embed(String text) {
-		Assert.notNull(text, "Text must not be null");
-		return this.embed(List.of(text)).iterator().next();
-	}
+    /**
+     * 将给定的文本嵌入到向量中。
+     *
+     * @param text 要进行嵌入的文本。
+     * @return 嵌入后的向量。
+     */
+    default List<Double> embed(String text) {
+        Assert.notNull(text, "Text must not be null");
+        return this.embed(List.of(text)).iterator().next();
+    }
 
-	/**
-	 * Embeds the given document's content into a vector.
-	 * @param document the document to embed.
-	 * @return the embedded vector.
-	 */
-	List<Double> embed(Document document);
+    /**
+     * 将给定文档的内容嵌入为向量。
+     *
+     * @param document 要进行嵌入的文档。
+     * @return 嵌入后的向量。
+     */
+    List<Double> embed(Document document);
 
-	/**
-	 * Embeds a batch of texts into vectors.
-	 * @param texts list of texts to embed.
-	 * @return list of list of embedded vectors.
-	 */
-	default List<List<Double>> embed(List<String> texts) {
-		Assert.notNull(texts, "Texts must not be null");
-		return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY))
-			.getResults()
-			.stream()
-			.map(Embedding::getOutput)
-			.toList();
-	}
+    /**
+     * 将一批文本嵌入为向量。
+     *
+     * @param texts 要进行嵌入的文档列表。
+     * @return 嵌入后的向量列表
+     */
+    default List<List<Double>> embed(List<String> texts) {
+        Assert.notNull(texts, "Texts must not be null");
+        return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY))
+                .getResults()
+                .stream()
+                .map(Embedding::getOutput)
+                .toList();
+    }
 
-	/**
-	 * Embeds a batch of texts into vectors and returns the {@link EmbeddingResponse}.
-	 * @param texts list of texts to embed.
-	 * @return the embedding response.
-	 */
-	default EmbeddingResponse embedForResponse(List<String> texts) {
-		Assert.notNull(texts, "Texts must not be null");
-		return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY));
-	}
+    /**
+     * 将一批文本嵌入到向量中，并返回嵌入响应 {@link EmbeddingResponse}.
+     *
+     * @param texts 要进行嵌入的文档列表。
+     * @return 嵌入响应对象。
+     */
+    default EmbeddingResponse embedForResponse(List<String> texts) {
+        Assert.notNull(texts, "Texts must not be null");
+        return this.call(new EmbeddingRequest(texts, EmbeddingOptions.EMPTY));
+    }
 
-	/**
-	 * @return the number of dimensions of the embedded vectors. It is generative
-	 * specific.
-	 */
-	default int dimensions() {
-		return embed("Test String").size();
-	}
+    /**
+     * @return 嵌入向量的维度数量，具体取决于生成模型。
+     */
+    default int dimensions() {
+        return embed("Test String").size();
+    }
 
 }
