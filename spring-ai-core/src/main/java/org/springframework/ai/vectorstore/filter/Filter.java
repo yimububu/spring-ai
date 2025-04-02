@@ -16,15 +16,11 @@
 package org.springframework.ai.vectorstore.filter;
 
 /**
- * Portable runtime generative for metadata filter expressions. This generic generative is
- * used to define store agnostic filter expressions than later can be converted into
- * vector-store specific, native, expressions.
- *
- * The expression generative supports constant comparison
- * {@code (e.g. ==, !=, <, <=, >, >=) }, IN/NON-IN checks and AND and OR to compose
- * multiple expressions.
- *
- * For example:
+ * 便携式运行时生成器用于元数据过滤表达式。这个通用生成器用于定义与存储无关的过滤表达式，这些表达式随后可以转换为特定于向量数据库的本地表达式。
+ * <p>
+ * 该表达式生成器支持常量比较{@code (e.g. ==, !=, <, <=, >, >=) }、IN/非IN检查以及AND和OR组合多个表达式。
+ * <p>
+ * 例如：
  *
  * <pre>{@code
  * // 1: country == "BG"
@@ -54,80 +50,75 @@ package org.springframework.ai.vectorstore.filter;
  * 				new Expression(IN, new Key("country"), new Value(List.of("BG", "NL", "US")))));
  *
  * }</pre>
- *
- *
- * Usually you will not create expression manually but use either the
- * {@link FilterExpressionBuilder} DSL or the {@link FilterExpressionTextParser} for
- * parsing generic text expressions.
+ * <p>
+ * <p>
+ * 通常，你不会手动创建表达式，而是使用{@link FilterExpressionBuilder} DSL 或 {@link FilterExpressionTextParser} 来解析通用文本表达式。
  *
  * @author Christian Tzolov
  */
 public class Filter {
 
-	/**
-	 * Mark interface representing the supported expression types: {@link Key},
-	 * {@link Value}, {@link Expression} and {@link Group}.
-	 */
-	public interface Operand {
+    /**
+     * 标记接口，表示支持的表达式类型：{@link Key}、{@link Value}、{@link Expression} 和 {@link Group}。
+     */
+    public interface Operand {
 
-	}
+    }
 
-	/**
-	 * String identifier representing an expression key. (e.g. the country in the country
-	 * == "NL" expression).
-	 */
-	public record Key(String key) implements Operand {
-	}
+    /**
+     * 表示表达式键的字符串标识符（例如，在 country == "NL" 表达式中的 country）。
+     */
+    public record Key(String key) implements Operand {
+    }
 
-	/**
-	 * Represents expression value constant or constant array. Support Numeric, Boolean
-	 * and String data types.
-	 */
-	public record Value(Object value) implements Operand {
-	}
+    /**
+     * 表示表达式的常量值或常量数组。支持数字、布尔值和字符串数据类型。
+     */
+    public record Value(Object value) implements Operand {
+    }
 
-	/**
-	 * Filter expression operations. <br/>
-	 *
-	 * - EQ, NE, GT, GTE, LT, LTE operations supports "Key ExprType Value"
-	 * expressions.<br/>
-	 *
-	 * - AND, OR are binary operations that support "(Expression|Group) ExprType
-	 * (Expression|Group)" expressions. <br/>
-	 *
-	 * - IN, NIN support "Key (IN|NIN) ArrayValue" expression. <br/>
-	 */
-	public enum ExpressionType {
+    /**
+     * Filter expression operations. <br/>
+     * <p>
+     * - EQ, NE, GT, GTE, LT, LTE operations supports "Key ExprType Value"
+     * expressions.<br/>
+     * <p>
+     * - AND, OR are binary operations that support "(Expression|Group) ExprType
+     * (Expression|Group)" expressions. <br/>
+     * <p>
+     * - IN, NIN support "Key (IN|NIN) ArrayValue" expression. <br/>
+     */
+    public enum ExpressionType {
 
-		AND, OR, EQ, NE, GT, GTE, LT, LTE, IN, NIN, NOT
+        AND, OR, EQ, NE, GT, GTE, LT, LTE, IN, NIN, NOT
 
-	}
+    }
 
-	/**
-	 * Triple that represents and filter boolean expression as
-	 * <code>left type right</code>.
-	 *
-	 * @param type Specify the expression type.
-	 * @param left For comparison and inclusion expression types, the operand must be of
-	 * type {@link Key} and for the AND|OR expression types the left operand must be
-	 * another {@link Expression}.
-	 * @param right For comparison and inclusion expression types, the operand must be of
-	 * type {@link Value} or array of values. For the AND|OR type the right operand must
-	 * be another {@link Expression}.
-	 */
-	public record Expression(ExpressionType type, Operand left, Operand right) implements Operand {
-		public Expression(ExpressionType type, Operand operand) {
-			this(type, operand, null);
-		}
-	}
+    /**
+     * 表示和过滤布尔表达式的三元组，形式为左类型右。
+     * Triple that represents and filter boolean expression as
+     * <code>left type right</code>.
+     *
+     * @param type  Specify the expression type.
+     * @param left  For comparison and inclusion expression types, the operand must be of
+     *              type {@link Key} and for the AND|OR expression types the left operand must be
+     *              another {@link Expression}.
+     * @param right For comparison and inclusion expression types, the operand must be of
+     *              type {@link Value} or array of values. For the AND|OR type the right operand must
+     *              be another {@link Expression}.
+     */
+    public record Expression(ExpressionType type, Operand left, Operand right) implements Operand {
+        public Expression(ExpressionType type, Operand operand) {
+            this(type, operand, null);
+        }
+    }
 
-	/**
-	 * Represents expression grouping (e.g. (...) ) that indicates that the group needs to
-	 * be evaluated with a precedence.
-	 *
-	 * @param content Inner expression to be evaluated as a part of the group.
-	 */
-	public record Group(Expression content) implements Operand {
-	}
+    /**
+     * 表示表达式分组（例如：(…)），用于指示该分组需要优先评估。
+     *
+     * @param content 表示作为分组一部分需要评估的内部表达式。
+     */
+    public record Group(Expression content) implements Operand {
+    }
 
 }
