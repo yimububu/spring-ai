@@ -26,83 +26,78 @@ import java.util.UUID;
 import org.springframework.util.Assert;
 
 /**
- * A SHA-256 based ID generator that returns the hash as a UUID.
+ * 一个基于 SHA-256 的 ID 生成器，返回哈希值作为 UUID。
  *
  * @author Aliakbar Jafarpour
  * @author Christian Tzolov
  */
 public class JdkSha256HexIdGenerator implements IdGenerator {
 
-	private static final String SHA_256 = "SHA-256";
+    private static final String SHA_256 = "SHA-256";
 
-	private final String byteHexFormat = "%02x";
+    private final String byteHexFormat = "%02x";
 
-	private final Charset charset;
+    private final Charset charset;
 
-	private final MessageDigest messageDigest;
+    private final MessageDigest messageDigest;
 
-	public JdkSha256HexIdGenerator(final String algorithm, final Charset charset) {
-		this.charset = charset;
-		try {
-			this.messageDigest = MessageDigest.getInstance(algorithm);
-		}
-		catch (NoSuchAlgorithmException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+    public JdkSha256HexIdGenerator(final String algorithm, final Charset charset) {
+        this.charset = charset;
+        try {
+            this.messageDigest = MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
-	public JdkSha256HexIdGenerator() {
-		this(SHA_256, StandardCharsets.UTF_8);
-	}
+    public JdkSha256HexIdGenerator() {
+        this(SHA_256, StandardCharsets.UTF_8);
+    }
 
-	@Override
-	public String generateId(Object... contents) {
-		return this.hash(this.serializeToBytes(contents));
-	}
+    @Override
+    public String generateId(Object... contents) {
+        return this.hash(this.serializeToBytes(contents));
+    }
 
-	// https://github.com/spring-projects/spring-ai/issues/113#issue-2000373318
-	private String hash(byte[] contentWithMetadata) {
-		byte[] hashBytes = getMessageDigest().digest(contentWithMetadata);
-		StringBuilder sb = new StringBuilder();
-		for (byte b : hashBytes) {
-			sb.append(String.format(this.byteHexFormat, b));
-		}
-		return UUID.nameUUIDFromBytes(sb.toString().getBytes(this.charset)).toString();
-	}
+    // https://github.com/spring-projects/spring-ai/issues/113#issue-2000373318
+    private String hash(byte[] contentWithMetadata) {
+        byte[] hashBytes = getMessageDigest().digest(contentWithMetadata);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashBytes) {
+            sb.append(String.format(this.byteHexFormat, b));
+        }
+        return UUID.nameUUIDFromBytes(sb.toString().getBytes(this.charset)).toString();
+    }
 
-	private byte[] serializeToBytes(Object... contents) {
-		Assert.notNull(contents, "Contents must not be null");
-		ByteArrayOutputStream byteOut = null;
-		try {
-			byteOut = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(byteOut);
-			for (Object content : contents) {
-				out.writeObject(content);
-			}
-			return byteOut.toByteArray();
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to serialize", e);
-		}
-		finally {
-			if (byteOut != null) {
-				try {
-					byteOut.close();
-				}
-				catch (Exception e) {
-					// ignore
-				}
-			}
-		}
-	}
+    private byte[] serializeToBytes(Object... contents) {
+        Assert.notNull(contents, "Contents must not be null");
+        ByteArrayOutputStream byteOut = null;
+        try {
+            byteOut = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteOut);
+            for (Object content : contents) {
+                out.writeObject(content);
+            }
+            return byteOut.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize", e);
+        } finally {
+            if (byteOut != null) {
+                try {
+                    byteOut.close();
+                } catch (Exception e) {
+                    // ignore
+                }
+            }
+        }
+    }
 
-	MessageDigest getMessageDigest() {
-		try {
-			return (MessageDigest) messageDigest.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new RuntimeException("Unsupported clone for MessageDigest.", e);
-		}
-	}
+    MessageDigest getMessageDigest() {
+        try {
+            return (MessageDigest) messageDigest.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Unsupported clone for MessageDigest.", e);
+        }
+    }
 
 }

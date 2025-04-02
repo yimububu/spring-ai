@@ -16,13 +16,12 @@
 package org.springframework.ai.document;
 
 /**
- * Converts the Document text and metadata into an AI, prompt-friendly text
- * representation.
+ * 将文档的文本和元数据转换为 AI 提示友好的文本表示形式。
  *
  * @author Christian Tzolov
  */
 public interface ContentFormatter {
 
-	String format(Document document, MetadataMode mode);
+    String format(Document document, MetadataMode mode);
 
 }

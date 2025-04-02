@@ -16,19 +16,19 @@
 package org.springframework.ai.document.id;
 
 /**
- * Interface for generating unique document IDs.
+ * IdGenerator 接口用于生成唯一文档 ID。
  *
  * @author Aliakbar Jafarpour
  * @author Christian Tzolov
  */
 public interface IdGenerator {
 
-	/**
-	 * Generate a unique ID for the given content. Note: some generator, such as the the
-	 * random generator might not dependant on or use the content parameters.
-	 * @param contents the content to generate an ID for.
-	 * @return the generated ID.
-	 */
-	String generateId(Object... contents);
+    /**
+     * 为给定内容生成唯一的 ID。注意：某些生成器（例如随机生成器）可能不会依赖于或使用内容参数。
+     *
+     * @param contents 需要生成 ID 的内容。
+     * @return the generated ID.
+     */
+    String generateId(Object... contents);
 
 }
