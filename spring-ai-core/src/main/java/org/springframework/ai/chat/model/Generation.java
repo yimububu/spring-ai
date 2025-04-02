@@ -24,57 +24,57 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.lang.Nullable;
 
 /**
- * Represents a response returned by the AI.
+ * Generation 代表 AI 模型返回的响应。
  */
 public class Generation implements ModelResult<AssistantMessage> {
 
-	private AssistantMessage assistantMessage;
+    private AssistantMessage assistantMessage;
 
-	private ChatGenerationMetadata chatGenerationMetadata;
+    private ChatGenerationMetadata chatGenerationMetadata;
 
-	public Generation(String text) {
-		this.assistantMessage = new AssistantMessage(text);
-	}
+    public Generation(String text) {
+        this.assistantMessage = new AssistantMessage(text);
+    }
 
-	public Generation(String text, Map<String, Object> properties) {
-		this.assistantMessage = new AssistantMessage(text, properties);
-	}
+    public Generation(String text, Map<String, Object> properties) {
+        this.assistantMessage = new AssistantMessage(text, properties);
+    }
 
-	@Override
-	public AssistantMessage getOutput() {
-		return this.assistantMessage;
-	}
+    @Override
+    public AssistantMessage getOutput() {
+        return this.assistantMessage;
+    }
 
-	@Override
-	public ChatGenerationMetadata getMetadata() {
-		ChatGenerationMetadata chatGenerationMetadata = this.chatGenerationMetadata;
-		return chatGenerationMetadata != null ? chatGenerationMetadata : ChatGenerationMetadata.NULL;
-	}
+    @Override
+    public ChatGenerationMetadata getMetadata() {
+        ChatGenerationMetadata chatGenerationMetadata = this.chatGenerationMetadata;
+        return chatGenerationMetadata != null ? chatGenerationMetadata : ChatGenerationMetadata.NULL;
+    }
 
-	public Generation withGenerationMetadata(@Nullable ChatGenerationMetadata chatGenerationMetadata) {
-		this.chatGenerationMetadata = chatGenerationMetadata;
-		return this;
-	}
+    public Generation withGenerationMetadata(@Nullable ChatGenerationMetadata chatGenerationMetadata) {
+        this.chatGenerationMetadata = chatGenerationMetadata;
+        return this;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof Generation that))
-			return false;
-		return Objects.equals(assistantMessage, that.assistantMessage)
-				&& Objects.equals(chatGenerationMetadata, that.chatGenerationMetadata);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Generation that))
+            return false;
+        return Objects.equals(assistantMessage, that.assistantMessage)
+                && Objects.equals(chatGenerationMetadata, that.chatGenerationMetadata);
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(assistantMessage, chatGenerationMetadata);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(assistantMessage, chatGenerationMetadata);
+    }
 
-	@Override
-	public String toString() {
-		return "Generation{" + "assistantMessage=" + assistantMessage + ", chatGenerationMetadata="
-				+ chatGenerationMetadata + '}';
-	}
+    @Override
+    public String toString() {
+        return "Generation{" + "assistantMessage=" + assistantMessage + ", chatGenerationMetadata="
+                + chatGenerationMetadata + '}';
+    }
 
 }
