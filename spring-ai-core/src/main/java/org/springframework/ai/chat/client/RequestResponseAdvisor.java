@@ -26,48 +26,46 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.Prompt;
 
 /**
- * Advisor called before and after the {@link ChatModel#call(Prompt)} and
- * {@link ChatModel#stream(Prompt)} methods calls. The {@link ChatClient} maintains a
- * chain of advisors with chared execution context.
+ * Advisor 在 {@link ChatModel#call(Prompt)} 和 {@link ChatModel#stream(Prompt)} 方法之前和之后进行调用。{@link ChatClient} 维护一个 advisors 链，并共享执行上下文。
  *
  * @author Christian Tzolov
  * @since 1.0.0 M1
  */
 public interface RequestResponseAdvisor {
 
-	/**
-	 * @param request the {@link AdvisedRequest} data to be advised. Represents the row
-	 * {@link ChatClientRequest} data before sealed into a {@link Prompt}.
-	 * @param context the shared data between the advisors in the chain. It is shared
-	 * between all request and response advising points of all advisors in the chain.
-	 * @return the advised {@link AdvisedRequest}.
-	 */
-	default AdvisedRequest adviseRequest(AdvisedRequest request, Map<String, Object> context) {
-		return request;
-	}
+    /**
+     * @param request the {@link AdvisedRequest} data to be advised. Represents the row
+     *                {@link ChatClientRequest} data before sealed into a {@link Prompt}.
+     * @param context the shared data between the advisors in the chain. It is shared
+     *                between all request and response advising points of all advisors in the chain.
+     * @return the advised {@link AdvisedRequest}.
+     */
+    default AdvisedRequest adviseRequest(AdvisedRequest request, Map<String, Object> context) {
+        return request;
+    }
 
-	/**
-	 * @param response the {@link ChatResponse} data to be advised. Represents the row
-	 * {@link ChatResponse} data after the {@link ChatModel#call(Prompt)} method is
-	 * called.
-	 * @param context the shared data between the advisors in the chain. It is shared
-	 * between all request and response advising points of all advisors in the chain.
-	 * @return the advised {@link ChatResponse}.
-	 */
-	default ChatResponse adviseResponse(ChatResponse response, Map<String, Object> context) {
-		return response;
-	}
+    /**
+     * @param response the {@link ChatResponse} data to be advised. Represents the row
+     *                 {@link ChatResponse} data after the {@link ChatModel#call(Prompt)} method is
+     *                 called.
+     * @param context  the shared data between the advisors in the chain. It is shared
+     *                 between all request and response advising points of all advisors in the chain.
+     * @return the advised {@link ChatResponse}.
+     */
+    default ChatResponse adviseResponse(ChatResponse response, Map<String, Object> context) {
+        return response;
+    }
 
-	/**
-	 * @param fluxResponse the streaming {@link ChatResponse} data to be advised.
-	 * Represents the row {@link ChatResponse} stream data after the
-	 * {@link ChatModel#stream(Prompt)} method is called.
-	 * @param context the shared data between the advisors in the chain. It is shared
-	 * between all request and response advising points of all advisors in the chain.
-	 * @return the advised {@link ChatResponse} flux.
-	 */
-	default Flux<ChatResponse> adviseResponse(Flux<ChatResponse> fluxResponse, Map<String, Object> context) {
-		return fluxResponse;
-	}
+    /**
+     * @param fluxResponse the streaming {@link ChatResponse} data to be advised.
+     *                     Represents the row {@link ChatResponse} stream data after the
+     *                     {@link ChatModel#stream(Prompt)} method is called.
+     * @param context      the shared data between the advisors in the chain. It is shared
+     *                     between all request and response advising points of all advisors in the chain.
+     * @return the advised {@link ChatResponse} flux.
+     */
+    default Flux<ChatResponse> adviseResponse(Flux<ChatResponse> fluxResponse, Map<String, Object> context) {
+        return fluxResponse;
+    }
 
 }
